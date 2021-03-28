@@ -1,6 +1,7 @@
 
 一、串行GC 和 并行GC
-    1、串行GC
+    
+   1、串行GC
         所谓的Serial GC，串行GC是jvm里最简单最原始的垃圾回收策略
         可以通过jvm参数 -XX: +UseSerialGC 使用它
         对年轻代使用 mark-corp（标记-复制）算法，对老年代使用mark-sweep-compact（标记-清除-整理）算法。
