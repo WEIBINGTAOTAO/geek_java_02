@@ -6,7 +6,8 @@
         对年轻代使用 mark-corp（标记-复制）算法，对老年代使用mark-sweep-compact（标记-清除-整理）算法。
         对年轻代和老年代进行垃圾都会触发STW，停止所有的应用线程。 
         由于是单线程的垃圾回收器，不能进行并行处理，所以不管有多少cpu内核，jvm在垃圾收集的时候都只能使用单个核心，适合几百MB堆内存的jvm。如果堆内容较大，由于是单线程，处理效率低，那STW的时间就会特别长。
-    2、并行GC
+   
+   2、并行GC
         Parallel GC ,是JDK678的默认GC。java 9 以及之后的版本，默认GC是G1 GC
         使用 -XX:+UseParallelGC 或者 -XX:+UseParalledOldGC 或者两者一起配置   -XX:+UseParallelGC  -XX:+UseParalledOldGC，可以启用并行GC。
         对年轻代使用mark-corp（标记-复制）算法，对老年代使用mark-sweep-compact（标记-清除-整理）算法。
