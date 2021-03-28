@@ -6,8 +6,6 @@
         对年轻代使用 mark-corp（标记-复制）算法，对老年代使用mark-sweep-compact（标记-清除-整理）算法。
         对年轻代和老年代进行垃圾都会触发STW，停止所有的应用线程。 
         由于是单线程的垃圾回收器，不能进行并行处理，所以不管有多少cpu内核，jvm在垃圾收集的时候都只能使用单个核心，适合几百MB堆内存的jvm。如果堆内容较大，由于是单线程，处理效率低，那STW的时间就会特别长。
-
- 
     2、并行GC
         Parallel GC ,是JDK678的默认GC。java 9 以及之后的版本，默认GC是G1 GC
         使用 -XX:+UseParallelGC 或者 -XX:+UseParalledOldGC 或者两者一起配置   -XX:+UseParallelGC  -XX:+UseParalledOldGC，可以启用并行GC。
@@ -15,9 +13,7 @@
         年轻代和老年代进行垃圾回收都会触发STW。
         多线程垃圾回收器，使用-XX:ParalledGCThreads=N来控制GC线程数，默认为CUP核心数
         适用于多核服务器，主要目标是增加吞吐量。在GC期间，所有CPU内核都在并行进行垃圾回收，所有总的暂停时间更短。在没有进行GC时，所有线程都被用来运行业务处理。
-
 二、CMS GC
-    
     Mostly Comcurrent Mark and Sweep Garbage Collector，最大可能性的并发的标记清除垃圾回收算法
     使用 -XX:+UseConcMarkSweepGC 启动此GC
     对年轻代使用对串行算法改进的ParNew(缩写，是指Parallel 年轻代)的GC算法，采用并行的mark-corp（标记-复制）算法，会导致并行的STW。对老年代使用并发的mark-sweep（标记-清除）算法，这里没有整理阶段。
@@ -30,11 +26,8 @@
     在老年代进行并发回收时，可能会伴随多次年轻代的minorGC.
     优点：在减少停顿时间上做了很多复杂而有用的工作，用于垃圾回收的并发线程执行的同时，不需要暂停应用线程。
     缺点：老年代内存没有整理，在某些情况下，GC会造成不可预测的暂停时间，特别是堆内存较大的情况下。
-
-
-
+    
 三、G1 GC   
-
     G1 GC 可以看做CMS GC 的改造，G1的全称是Garbage-First，意思是垃圾优先，哪一块的垃圾最多就优先清理它。
     使用参数 -XX:+UseG1GC 启动G1 GC .
     G1 GC 最主要的设计目标是：将STW停顿的时间和分布，变成可预期且可配置的。可以使用参数-XX:MaxGCPauseMillis=50 控制预期GC暂停的时间，默认是200毫秒。
